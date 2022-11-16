@@ -1,15 +1,15 @@
 import Foundation
 
+public struct RequriedEnvironmentVariableError: LocalizedError {
+    let key: String
+
+    public var errorDescription: String? {
+        "Missing required environment variable: \(key)"
+    }
+}
+
 @propertyWrapper
 public struct EnvironmentVariable<T> {
-    public struct RequriedEnvironmentVariableError: LocalizedError {
-        let key: String
-
-        public var errorDescription: String? {
-            "Missing required environment variable: \(key)"
-        }
-    }
-
     public struct Required {
         let key: String
         let value: T?
