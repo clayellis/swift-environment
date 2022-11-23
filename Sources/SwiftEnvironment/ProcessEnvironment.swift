@@ -15,7 +15,7 @@ public enum ProcessEnvironment {
         return value
     }
 
-    static func dump() -> String {
+    public static func _dump() -> String {
         environment
             .map { "\($0.key): \($0.value)" }
             .joined(separator: "\n")
