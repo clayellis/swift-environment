@@ -135,4 +135,15 @@ public extension ProcessEnvironment.GitHub {
     static var isPullRequest: Bool {
         eventName == "pull_request"
     }
+
+    static var ownerRepository: (owner: String, repository: String)? {
+        try? requireOwnerRepository()
+    }
+
+    static func requireOwnerRepository() throws -> (owner: String, repository: String) {
+        let owner = try $repositoryOwner.require()
+        let ownerRespository = try $repository.require()
+        let repository = String(ownerRespository.dropFirst((owner + "/").count))
+        return (owner: owner, repository: repository)
+    }
 }
