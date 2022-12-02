@@ -146,4 +146,28 @@ public extension ProcessEnvironment.GitHub {
         let repository = String(ownerRespository.dropFirst((owner + "/").count))
         return (owner: owner, repository: repository)
     }
+
+    private struct PullRequestNumberError: Error {
+        let message: String
+    }
+
+    static var pullRequestNumber: Int? {
+        try? requirePullRequestNumber()
+    }
+
+    static func requirePullRequestNumber() throws -> Int {
+        let mergeSuffix = "/merge"
+        let refName = try $refName.require()
+        guard refName.hasSuffix(mergeSuffix) else {
+            throw PullRequestNumberError(message: "invalid ref name '\(refName)'")
+        }
+
+        let refNumberString = refName.dropLast(mergeSuffix.count)
+
+        guard let refNumber = Int(refNumberString) else {
+            throw PullRequestNumberError(message: "invalid ref number '\(refNumberString)'")
+        }
+
+        return refNumber
+    }
 }
