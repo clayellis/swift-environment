@@ -17,6 +17,7 @@ public enum ProcessEnvironment {
 
     public static func _dump() -> String {
         environment
+            .sorted(by: { $0.key < $1.key })
             .map { "\($0.key): \($0.value)" }
             .joined(separator: "\n")
     }
