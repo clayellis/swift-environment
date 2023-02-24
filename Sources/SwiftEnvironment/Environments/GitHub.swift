@@ -107,6 +107,9 @@ public extension ProcessEnvironment.GitHub {
     @EnvironmentVariable("GITHUB_WORKFLOW")
     static var workflow
 
+    @EnvironmentVariable("GITHUB_WORKFLOW_REF")
+    static var workflowRef
+
     @EnvironmentVariable("GITHUB_WORKSPACE")
     static var workspace
 
@@ -169,5 +172,24 @@ public extension ProcessEnvironment.GitHub {
         }
 
         return refNumber
+    }
+
+    enum WorkflowFileNameError: Error {
+        case invalidRef(String)
+        case invalidFile(String)
+    }
+
+    static var workflowFilename: String {
+        get throws {
+            let ref = try $workflowRef.require()
+            // Example: LumioHX/hx-ios/.github/workflows/cicd.yml@refs/pull/153/merge
+            guard let fileName = ref.components(separatedBy: "@refs").first?.components(separatedBy: "/").last else {
+                throw WorkflowFileNameError.invalidRef(ref)
+            }
+            guard fileName.hasSuffix(".yml") else {
+                throw WorkflowFileNameError.invalidFile(fileName)
+            }
+            return fileName
+        }
     }
 }
