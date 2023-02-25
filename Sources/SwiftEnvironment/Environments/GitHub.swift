@@ -183,7 +183,7 @@ public extension ProcessEnvironment.GitHub {
         get throws {
             let ref = try $workflowRef.require()
             // Example: LumioHX/hx-ios/.github/workflows/cicd.yml@refs/pull/153/merge
-            guard let fileName = ref.components(separatedBy: "@refs").first?.components(separatedBy: "/").last else {
+            guard let fileName = ref.components(separatedBy: "@").first?.components(separatedBy: "/").last else {
                 throw WorkflowFileNameError.invalidRef(ref)
             }
             guard fileName.hasSuffix(".yml") else {
