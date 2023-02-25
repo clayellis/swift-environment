@@ -89,7 +89,7 @@ public extension ProcessEnvironment.GitHub {
     @EnvironmentVariable("GITHUB_RUN_ATTEMPT", transform: int)
     static var runAttempt
 
-    @EnvironmentVariable("GITHUB_RUN_ID")
+    @EnvironmentVariable("GITHUB_RUN_ID", transform: int)
     static var runID
 
     @EnvironmentVariable("GITHUB_RUN_NUMBER", transform: int)
