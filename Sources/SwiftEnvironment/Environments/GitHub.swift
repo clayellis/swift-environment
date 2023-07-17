@@ -1,3 +1,5 @@
+import Foundation
+
 extension ProcessEnvironment {
     public static let github = GitHub.self
     public enum GitHub {}
@@ -16,6 +18,10 @@ extension ProcessEnvironment.GitHub {
 
     static func int(_ value: String) -> Int? {
         Int(value)
+    }
+
+    static func url(_ value: String) -> URL? {
+        URL(string: value)
     }
 }
 
@@ -38,7 +44,7 @@ public extension ProcessEnvironment.GitHub {
     @EnvironmentVariable("GITHUB_ACTOR")
     static var actor
 
-    @EnvironmentVariable("GITHUB_API_URL")
+    @EnvironmentVariable("GITHUB_API_URL", transform: url)
     static var apiURL
 
     @EnvironmentVariable("GITHUB_BASE_REF")
@@ -53,7 +59,7 @@ public extension ProcessEnvironment.GitHub {
     @EnvironmentVariable("GITHUB_EVENT_PATH")
     static var eventPath
 
-    @EnvironmentVariable("GITHUB_GRAPHQL_URL")
+    @EnvironmentVariable("GITHUB_GRAPHQL_URL", transform: url)
     static var graphQLURL
 
     @EnvironmentVariable("GITHUB_HEAD_REF")
@@ -95,7 +101,13 @@ public extension ProcessEnvironment.GitHub {
     @EnvironmentVariable("GITHUB_RUN_NUMBER", transform: int)
     static var runNumber
 
-    @EnvironmentVariable("GITHUB_SERVER_URL")
+    @EnvironmentVariable("ACTIONS_RUNTIME_TOKEN")
+    static var runtimeToken
+
+    @EnvironmentVariable("ACTIONS_RUNTIME_URL", transform: url)
+    static var runtimeURL
+
+    @EnvironmentVariable("GITHUB_SERVER_URL", transform: url)
     static var serverURL
 
     @EnvironmentVariable("GITHUB_SHA")
